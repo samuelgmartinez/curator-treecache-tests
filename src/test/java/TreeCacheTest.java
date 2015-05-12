@@ -47,12 +47,6 @@ public class TreeCacheTest {
     }
 
     @Test
-    public void testListenerNonExistentRoot() throws Exception {
-        log.info("TESTING NON existent root treecache");
-        testListener(PATH, fw);
-    }
-
-    @Test
     public void testListenerExistentRoot() throws Exception {
         log.info("TESTING existent root treecache");
         fw.create().forPath(PATH);
@@ -64,7 +58,8 @@ public class TreeCacheTest {
         log.info("TESTING NON existent root treecache loop");
 
         for(int i = 0 ; i<ITERATIONS ; i++) {
-            Thread.sleep(100);
+            Thread.sleep(200);
+            log.info("Iteration {}", i);
             CuratorFramework customFW = CuratorFrameworkFactory.newClient(zkServer.getConnectString(), new RetryNTimes(2, 100));
             customFW.start();
             customFW.blockUntilConnected();
@@ -72,7 +67,6 @@ public class TreeCacheTest {
             testListener(PATH, customFW);
 
             customFW.close();
-
         }
     }
 
