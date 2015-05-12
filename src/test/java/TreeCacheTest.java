@@ -49,24 +49,30 @@ public class TreeCacheTest {
     @Test
     public void testListenerNonExistentRoot() throws Exception {
         log.info("TESTING NON existent root treecache");
-        testListener(PATH);
+        testListener(PATH, fw);
     }
 
     @Test
     public void testListenerExistentRoot() throws Exception {
         log.info("Testing existent root treecache");
         fw.create().forPath(PATH);
-        testListener(PATH);
+        testListener(PATH, fw);
     }
 
     @Test
     public void testListenerNonExistentRootLoop() throws Exception {
         for(int i = 0 ; i<ITERATIONS ; i++) {
-            testListener(PATH);
+            CuratorFramework customFW = CuratorFrameworkFactory.newClient(zkServer.getConnectString(), new RetryNTimes(2, 100));
+            customFW.start();
+            customFW.blockUntilConnected();
+
+            testListener(PATH, customFW);
+
+            customFW.close();
         }
     }
 
-    private void testListener(String path) throws Exception {
+    private void testListener(String path, CuratorFramework fw) throws Exception {
         TreeCache cache = new TreeCache(fw, path);
         CountDownLatch latch = new CountDownLatch(1);
 
