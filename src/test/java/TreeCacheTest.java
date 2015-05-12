@@ -21,6 +21,8 @@ public class TreeCacheTest {
 
     private static final Logger log = LoggerFactory.getLogger(TreeCacheTest.class);
 
+    private static final String PATH = "/test";
+
     private TestingServer zkServer;
     private CuratorFramework fw;
 
@@ -45,28 +47,19 @@ public class TreeCacheTest {
 
     @Test
     public void testListenerNonExistentRoot() throws Exception {
-        TreeCache cache = new TreeCache(fw, "/test");
-        CountDownLatch latch = new CountDownLatch(1);
-
-        cache.getListenable().addListener((client, event) -> {
-            log.info("event received {}", event.getType().name());
-            if (event.getType() == TreeCacheEvent.Type.INITIALIZED) {
-                latch.countDown();
-            }
-        });
-
-        cache.start();
-
-        Assert.assertTrue(latch.await(2, TimeUnit.SECONDS));
-
-        cache.close();
+        log.info("TESTING NON existent root treecache");
+        testListener(PATH);
     }
 
     @Test
     public void testListenerExistentRoot() throws Exception {
-        fw.create().forPath("/test");
+        log.info("Testing existent root treecache");
+        fw.create().forPath(PATH);
+        testListener(PATH);
+    }
 
-        TreeCache cache = new TreeCache(fw, "/test");
+    private void testListener(String path) throws Exception {
+        TreeCache cache = new TreeCache(fw, path);
         CountDownLatch latch = new CountDownLatch(1);
 
         cache.getListenable().addListener((client, event) -> {
