@@ -33,6 +33,7 @@ public class TreeCacheTest {
 
         fw = CuratorFrameworkFactory.newClient(zkServer.getConnectString(), new RetryNTimes(2, 100));
         fw.start();
+        fw.blockUntilConnected();
     }
 
     @After
