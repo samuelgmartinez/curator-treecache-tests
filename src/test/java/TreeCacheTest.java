@@ -83,11 +83,12 @@ public class TreeCacheTest {
 
         cache.start();
         boolean result = latch.await(2, TimeUnit.SECONDS);
-        Assert.assertTrue(result);
         if(!result) {
             log.error("timeout waiting for the INTIALIZED event");
         }
+
         cache.close();
+        Assert.assertTrue(result);
     }
 
 }
