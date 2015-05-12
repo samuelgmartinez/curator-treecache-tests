@@ -22,7 +22,7 @@ public class TreeCacheTest {
     private static final Logger log = LoggerFactory.getLogger(TreeCacheTest.class);
 
     private static final String PATH = "/test";
-    private static final int ITERATIONS = 100;
+    private static final int ITERATIONS = 50;
 
     private TestingServer zkServer;
     private CuratorFramework fw;
@@ -64,6 +64,7 @@ public class TreeCacheTest {
         log.info("TESTING NON existent root treecache loop");
 
         for(int i = 0 ; i<ITERATIONS ; i++) {
+            Thread.sleep(100);
             CuratorFramework customFW = CuratorFrameworkFactory.newClient(zkServer.getConnectString(), new RetryNTimes(2, 100));
             customFW.start();
             customFW.blockUntilConnected();
