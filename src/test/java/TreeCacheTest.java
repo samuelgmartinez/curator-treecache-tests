@@ -22,6 +22,7 @@ public class TreeCacheTest {
     private static final Logger log = LoggerFactory.getLogger(TreeCacheTest.class);
 
     private static final String PATH = "/test";
+    private static final int ITERATIONS = 100;
 
     private TestingServer zkServer;
     private CuratorFramework fw;
@@ -56,6 +57,13 @@ public class TreeCacheTest {
         log.info("Testing existent root treecache");
         fw.create().forPath(PATH);
         testListener(PATH);
+    }
+
+    @Test
+    public void testListenerNonExistentRootLoop() throws Exception {
+        for(int i = 0 ; i<ITERATIONS ; i++) {
+            testListener(PATH);
+        }
     }
 
     private void testListener(String path) throws Exception {
