@@ -58,6 +58,8 @@ public class TreeCacheTest {
         cache.start();
 
         Assert.assertTrue(latch.await(2, TimeUnit.SECONDS));
+
+        cache.close();
     }
 
     @Test
@@ -77,6 +79,7 @@ public class TreeCacheTest {
         cache.start();
 
         Assert.assertTrue(latch.await(2, TimeUnit.SECONDS));
+        cache.close();
     }
 
 }
